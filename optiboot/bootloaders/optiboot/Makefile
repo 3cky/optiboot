@@ -470,6 +470,32 @@ atmega328_isp: LFUSE ?= FF
 atmega328_isp: EFUSE ?= FD
 atmega328_isp: isp
 
+HELPTEXT += "target atmega328_20*    - ATmega328, ATmega328p, ATmega328pb @ 20 MHz\n"
+atmega328_20: TARGET = atmega328
+atmega328_20: MCU_TARGET = atmega328p
+atmega328_20: CFLAGS += $(COMMON_OPTIONS)
+atmega328_20: AVR_FREQ ?= 20000000L
+atmega328_20: $(PROGRAM)_atmega328_20MHz.hex
+ifndef PRODUCTION
+atmega328_20: $(PROGRAM)_atmega328_20MHz.lst
+endif
+
+atmega328_20_isp: atmega328
+atmega328_20_isp: TARGET = atmega328
+atmega328_20_isp: MCU_TARGET = atmega328p
+ifndef BIGBOOT
+# 512 byte boot, SPIEN
+atmega328_20_isp: HFUSE ?= DE
+else
+# 1k byte boot, SPIEN
+atmega328_20_isp: HFUSE ?= DC
+endif
+# Low power xtal (20MHz) 16KCK/14CK+65ms
+atmega328_20_isp: LFUSE ?= FF
+# 2.7V brownout
+atmega328_20_isp: EFUSE ?= FD
+atmega328_20_isp: isp
+
 #Atmega1280
 #HELPTEXT += "target atmega1280    - ATmega1280 (100pin, 128k)\n"
 atmega1280: MCU_TARGET = atmega1280
